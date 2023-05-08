@@ -1,0 +1,46 @@
+{
+    "git.mergeEditor": true,
+    "editor.rulers": [
+        120
+    ],
+    "files.exclude": {
+        ".idea": true,
+        ".mypy_cache": true,
+        "**/.pytest_cache": true,
+        "*.egg-info": true,
+        "**/__pycache__": true,
+        ".coverage": true,
+        "coverage.xml": true,
+        "htmlcov": true,
+        "venv": true
+    },
+    "python.testing.pytestArgs": [
+        "tests"
+    ],
+    "python.testing.pytestEnabled": true,
+    "python.testing.unittestEnabled": false,
+    "python.linting.enabled": true,
+    "python.linting.flake8Enabled": true,
+    "python.formatting.provider": "black",
+    "python.formatting.blackArgs": [ "--line-length=120" ],
+    "[python]": { "editor.formatOnSave": true },
+    "[json]": { "editor.formatOnSave": true},
+    "editor.codeActionsOnSave": { "source.organizeImports": true },
+    "python.linting.mypyEnabled": true,
+    "mypy.targets": [
+        // Required by dmypy - otherwise mypy has an error in vscode
+        "--follow-imports=normal",
+        "."
+    ],
+    "python.analysis.inlayHints.functionReturnTypes": true,
+    "python.analysis.inlayHints.pytestParameters": true,
+    "python.analysis.diagnosticSeverityOverrides": {
+        "reportPrivateUsage": "information",
+    },
+    "errorLens.enabledDiagnosticLevels": [
+        "error",
+        "warning"
+    ],
+    "todo-tree.general.showActivityBarBadge": true,
+    "todo-tree.general.statusBar": "current file"
+}

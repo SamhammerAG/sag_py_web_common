@@ -1,0 +1,57 @@
+{
+	"name": "sag_py_web_common",
+	"build": {
+		"dockerfile": "Dockerfile",
+		"context": ".."
+	},
+	"customizations": {
+		"vscode": {
+			"settings": {
+				"python.pythonPath": "/usr/local/bin/python",
+				"python.defaultInterpreterPath": "/usr/local/bin/python",
+				"python.languageServer": "Pylance",
+				"python.formatting.autopep8Path": "/usr/local/py-utils/bin/autopep8",
+				"python.formatting.blackPath": "/usr/local/py-utils/bin/black",
+				"python.formatting.yapfPath": "/usr/local/py-utils/bin/yapf",
+				"python.linting.banditPath": "/usr/local/py-utils/bin/bandit",
+				"python.linting.flake8Path": "/home/vscode/.local/bin/flake8",
+				"flake8.importStrategy": "fromEnvironment",
+				"python.linting.mypyPath": "/home/vscode/.local/bin/mypy",
+				"python.linting.pycodestylePath": "/usr/local/py-utils/bin/pycodestyle",
+				"python.linting.pydocstylePath": "/usr/local/py-utils/bin/pydocstyle",
+				"python.linting.pylintPath": "/usr/local/py-utils/bin/pylint"
+			},
+			"extensions": [
+				"ms-python.python",
+				"ms-python.vscode-pylance",
+				"ms-python.flake8",
+				"matangover.mypy",
+				"ms-python.isort",
+				"usernamehw.errorlens",
+				"sourcery.sourcery",
+				"njqdev.vscode-python-typehint",
+				"njpwerner.autodocstring",
+				"redhat.vscode-yaml",
+				"visualstudioexptteam.vscodeintellicode",
+				"kaih2o.python-resource-monitor",
+				"geeebe.duplicate",
+				"oderwat.indent-rainbow",
+				"shardulm94.trailing-spaces",
+				"streetsidesoftware.code-spell-checker",
+				"ryanluker.vscode-coverage-gutters",
+				"spmeesseman.vscode-taskexplorer",
+				"eamodio.gitlens",
+				"tamasfe.even-better-toml",
+				"AykutSarac.jsoncrack-vscode",
+				"yzhang.markdown-all-in-one",
+				"Gruntfuggly.todo-tree"
+			]
+		}
+	},
+	"initializeCommand": "powershell.exe .\\.devcontainer\\initialize.ps1",
+	"postCreateCommand": "pip3 install -r ${containerWorkspaceFolder}/requirements-dev.txt",
+	"remoteUser": "vscode",
+	"mounts": [
+		"source=${localEnv:USERPROFILE}/_devcontainer/cache,target=/home/vscode/.cache,type=bind"
+	]
+}

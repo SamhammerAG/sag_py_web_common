@@ -1,0 +1,35 @@
+{
+    "version": "2.0.0",
+    "tasks": [
+        {
+            "label": "Pytest with coverage report",
+            "type": "shell",
+            "command": "pytest --cov=sag_py_web_common --cov-report=xml --cov-report=html tests && coverage-lcov",
+            "group": "test",
+            "presentation": {
+                "reveal": "always",
+                "panel": "new"
+            }
+        },
+        {
+            "label": "Lint",
+            "type": "shell",
+            "command": "flake8 . --count --statistics; mypy .",
+            "group": "test",
+            "presentation": {
+                "reveal": "always",
+                "panel": "new"
+            }
+        },
+        {
+            "label": "Build local package",
+            "type": "shell",
+            "command": "pip install build && python -m build --sdist --wheel --outdir dist .",
+            "group": "test",
+            "presentation": {
+                "reveal": "always",
+                "panel": "new"
+            }
+        }
+    ]
+}
