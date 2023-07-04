@@ -56,16 +56,26 @@ Also see this page for further configuration details: https://github.com/Kludex/
 
 ### Json exception handler
 
-Per default fastapi falls back to text responses if there are exceptions.
+Per default fastapi falls back to text responses if there are unknown exceptions.
 That's not the desired behaviour for json api's.
 
 This handler ensures that a json is returned. It contains the field "detail" with the exception message.
 
 ```python
-from sag_py_web_common.json_exception_handler import handle_exception
+from sag_py_web_common.json_exception_handler import handle_unknown_exception
 
-app.add_exception_handler(Exception, handle_exception)
+app.add_exception_handler(Exception, handle_unknown_exception)
 ```
+Fo logging any HHTP-Exception use log_exception funktion.
+
+```python
+from starlette.exceptions import HTTPException as StarletteHTTPException
+from sag_py_web_common.json_exception_handler import log_exception
+
+app.add_exception_handler(StarletteHTTPException, log_exception)
+```
+
+Json Exception handler uses logger "http_error_logger", what could be use for reporting concepts
 
 ## How to start developing
 
