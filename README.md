@@ -66,7 +66,7 @@ from sag_py_web_common.json_exception_handler import handle_unknown_exception
 
 app.add_exception_handler(Exception, handle_unknown_exception)
 ```
-Fo logging any HHTP-Exception use log_exception funktion.
+For logging any HHTP-Exception use the **log_exception** function.
 
 ```python
 from starlette.exceptions import HTTPException as StarletteHTTPException
@@ -75,7 +75,7 @@ from sag_py_web_common.json_exception_handler import log_exception
 app.add_exception_handler(StarletteHTTPException, log_exception)
 ```
 
-Json Exception handler uses logger "http_error_logger", what could be use for reporting concepts
+Json Exception handler uses logger "http_error_logger", which could be used for reporting concepts.
 
 ## How to start developing
 
