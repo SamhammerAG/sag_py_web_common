@@ -25,7 +25,9 @@
     "python.formatting.blackArgs": [ "--line-length=120" ],
     "[python]": { "editor.formatOnSave": true },
     "[json]": { "editor.formatOnSave": true},
-    "editor.codeActionsOnSave": { "source.organizeImports": true },
+    "editor.codeActionsOnSave": {
+        "source.organizeImports": "explicit"
+    },
     "python.linting.mypyEnabled": true,
     "mypy.targets": [
         // Required by dmypy - otherwise mypy has an error in vscode
