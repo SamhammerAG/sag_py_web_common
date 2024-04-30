@@ -3,9 +3,15 @@ flake8
 mypy
 build
 
+mock
+types-mock
+
 pytest
 pytest-asyncio
 pytest-cov
+
+# Toml and coverage temporarely fixes compatibility issues between coverage-lcov and coverage
+# see for details: https://github.com/theupdateframework/python-tuf/issues/2254
 coverage-lcov
-mock
-types-mock
+toml
+coverage==6.5.0
