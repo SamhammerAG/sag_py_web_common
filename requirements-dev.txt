@@ -7,5 +7,6 @@ pytest
 pytest-asyncio
 pytest-cov
 coverage-lcov
+toml
 mock
 types-mock
