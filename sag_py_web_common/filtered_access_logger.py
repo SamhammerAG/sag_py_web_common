@@ -1,5 +1,3 @@
-from typing import Dict
-
 from asgi_logger.middleware import AccessInfo, AccessLogAtoms, AccessLoggerMiddleware
 from asgiref.typing import ASGIReceiveCallable, ASGISendCallable, HTTPScope
 
@@ -24,7 +22,7 @@ class FilteredAccessLoggerMiddleware(AccessLoggerMiddleware):
         return scope["type"] == "http" and not self._has_health_check_header(scope)
 
     def _has_health_check_header(self, scope: HTTPScope) -> bool:
-        header_dict: Dict[bytes, bytes] = dict(scope["headers"])
+        header_dict: dict[bytes, bytes] = dict(scope["headers"])
         return b"healthcheck" in header_dict and header_dict[b"healthcheck"] in {
             b"livenessprobe",
             b"readinessprobe",
