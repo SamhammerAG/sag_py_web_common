@@ -16,7 +16,10 @@ class FilteredAccessLoggerMiddleware(AccessLoggerMiddleware):
     def log(self, scope: HTTPScope, info: AccessInfo) -> None:
         if self._should_log(scope):
             extra_args = {"execution_time": info["end_time"] - info["start_time"]}
-            self.logger.info(self.format, AccessLogAtoms(scope, info), extra=extra_args)
+            if info["response"].get("status") and str(info["response"]["status"])[0] == "2":  # type: ignore
+                self.logger.info(self.format, AccessLogAtoms(scope, info), extra=extra_args)
+            else:
+                self.logger.warning(self.format, AccessLogAtoms(scope, info), extra=extra_args)
 
     def _should_log(self, scope: HTTPScope) -> bool:
         return scope["type"] == "http" and not self._has_health_check_header(scope)

@@ -12,9 +12,11 @@ asgi-logger = "^0.1.0"
 fastapi = "^0.110.3"
 
 [tool.poetry.group.dev.dependencies]
+anyio = ">=4.4.0"
 build = ">=1.1.1"
 coverage-lcov = "*"
 flake8 = ">=5.0.4"
+httpx = "*"
 mock = "*"
 mypy = "*"
 pytest = "*"
