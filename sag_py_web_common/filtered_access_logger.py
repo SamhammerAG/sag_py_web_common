@@ -17,10 +17,10 @@ class FilteredAccessLoggerMiddleware(AccessLoggerMiddleware):
         app: ASGI3Application,
         format: Union[str, None],
         logger: Union[logging.Logger, None],
-        excluded_pathes: Union[List[str], None]
+        excluded_paths: Union[List[str], None]
     ) -> None:
         super().__init__(app, format, logger)
-        self.excluded_pathes = excluded_pathes or []
+        self.excluded_paths = excluded_paths or []
 
     async def __call__(self, scope: HTTPScope, receive: ASGIReceiveCallable, send: ASGISendCallable) -> None:
         if self._should_log(scope):
@@ -35,12 +35,12 @@ class FilteredAccessLoggerMiddleware(AccessLoggerMiddleware):
 
     def _should_log(self, scope: HTTPScope) -> bool:
         return scope["type"] == "http" \
-            and not FilteredAccessLoggerMiddleware._is_excluded_path(scope, self.excluded_pathes)
+            and not FilteredAccessLoggerMiddleware._is_excluded_path(scope, self.excluded_paths)
 
     @staticmethod
-    def _is_excluded_path(scope: HTTPScope, excluded_pathes: List[str]) -> bool:
-        if not excluded_pathes:
+    def _is_excluded_path(scope: HTTPScope, excluded_paths: List[str]) -> bool:
+        if not excluded_paths:
             return False
 
         path: str = str(scope["path"])
-        return any(excluded in path for excluded in excluded_pathes)
+        return any(excluded in path for excluded in excluded_paths)

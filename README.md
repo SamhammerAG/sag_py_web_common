@@ -38,7 +38,7 @@ Extends the asgi-logger and adds a log entry for received requests.
 Furthermore the requests are filtered, so that health checks don't spam the logs.
 
 For requests to be filtered it is possible to define substrings of the path with the optional
-parameter "excluded_pathes". (it can also be parts from the middle as it is a contains search)
+parameter "excluded_paths". (it can also be parts from the middle as it is a contains search)
 
 ```python
 from sag_py_web_common.filtered_access_logger import FilteredAccessLoggerMiddleware
@@ -49,7 +49,7 @@ app.add_middleware(
     FilteredAccessLoggerMiddleware,
     format="Completed: %(R)s - %(st)s - %(L)s",
     logger=logging.getLogger("access"),
-    excluded_pathes=["pathPart/partOne", "pathPart/partTwo"], # optional
+    excluded_paths=["pathPart/partOne", "pathPart/partTwo"], # optional
 )
 ```
 

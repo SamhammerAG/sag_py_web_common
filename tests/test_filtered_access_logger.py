@@ -23,11 +23,11 @@ from sag_py_web_common.filtered_access_logger import \
 ])
 def test_is_excluded_path_with_ignore_list(path: str, expected: bool) -> None:
     # Arrange
-    excluded_pathes = ["maintain/serviceStatus", "health/serviceStatus"]
+    excluded_paths = ["maintain/serviceStatus", "health/serviceStatus"]
     scope = {"path": path}
 
     # Act
-    actual = FilteredAccessLoggerMiddleware._is_excluded_path(scope, excluded_pathes)  # type: ignore
+    actual = FilteredAccessLoggerMiddleware._is_excluded_path(scope, excluded_paths)  # type: ignore
 
     # Assert
     assert actual == expected
@@ -40,11 +40,11 @@ def test_is_excluded_path_with_ignore_list(path: str, expected: bool) -> None:
 ])
 def test_is_excluded_path_without_ignore_list(path: str, expected: bool) -> None:
     # Arrange
-    excluded_pathes = None
+    excluded_paths = None
     scope = {"path": path}
 
     # Act
-    actual = FilteredAccessLoggerMiddleware._is_excluded_path(scope, excluded_pathes)  # type: ignore
+    actual = FilteredAccessLoggerMiddleware._is_excluded_path(scope, excluded_paths)  # type: ignore
 
     # Assert
     assert actual == expected
@@ -57,11 +57,11 @@ def test_is_excluded_path_without_ignore_list(path: str, expected: bool) -> None
 ])
 def test_is_excluded_path_with_empty_ignore_list(path: str, expected: bool) -> None:
     # Arrange
-    excluded_pathes: List[str] = []
+    excluded_paths: List[str] = []
     scope = {"path": path}
 
     # Act
-    actual = FilteredAccessLoggerMiddleware._is_excluded_path(scope, excluded_pathes)  # type: ignore
+    actual = FilteredAccessLoggerMiddleware._is_excluded_path(scope, excluded_paths)  # type: ignore
 
     # Assert
     assert actual == expected
