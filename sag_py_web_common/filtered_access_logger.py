@@ -22,7 +22,9 @@ class FilteredAccessLoggerMiddleware(AccessLoggerMiddleware):
         self.excluded_paths = excluded_paths or []
         self.exclude_header = exclude_header.strip().lower() if exclude_header else ""
 
-    async def __call__(self, scope: HTTPScope, receive: ASGIReceiveCallable, send: ASGISendCallable) -> None:
+    async def __call__(
+        self, scope: HTTPScope, receive: ASGIReceiveCallable, send: ASGISendCallable
+    ) -> None:  # pragma: no cover
         if self._should_log(scope):
             self.logger.info("Received: %s %s", scope["method"], scope["path"])
 
