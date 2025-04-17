@@ -2,7 +2,8 @@ import logging
 from typing import List
 
 import pytest
-from asgiref.typing import ASGI3Application
+from asgi_logger.middleware import AccessInfo
+from asgiref.typing import ASGI3Application, ASGISendEvent
 from fastapi import FastAPI
 from starlette.testclient import TestClient
 
@@ -22,6 +23,48 @@ def read_root() -> dict[str, str]:
 
 
 client = TestClient(app)
+
+
+@pytest.mark.parametrize(
+    "log_level, http_response_code",
+    [
+        (logging.INFO, 200),
+        (logging.WARNING, 400),
+    ],
+)
+def test_middleware_logs_successfully(
+    log_level: int, http_response_code: int, caplog: pytest.LogCaptureFixture
+) -> None:
+    caplog.set_level(logging.INFO)
+    mock_app: ASGI3Application = lambda scope, receive, send: None  # type: ignore
+    info = {
+        "start_time": 1,
+        "end_time": 1,
+        "response": {"status": http_response_code},
+    }
+    middleware = FilteredAccessLoggerMiddleware(
+        app=mock_app, format=None, logger=None, excluded_paths=[], exclude_header=""
+    )
+    scope = {
+        "type": "http",
+        "http_version": "1.1",
+        "method": "GET",
+        "headers": [],
+        "path": "/",
+        "query_string": b"",
+        "server": ("127.0.0.1", 8000),
+        "client": ("127.0.0.1", 5000),
+        "scheme": "http",
+        "root_path": "",
+        "asgi": {"version": "3.0", "spec_version": "2.0"},
+    }
+
+    middleware.log(scope, info)  # type: ignore # pylint: disable=W0212:protected-access
+
+    logs_at_correct_log_level = [record for record in caplog.records if record.levelno == log_level]
+
+    assert len(caplog.records) == 1
+    assert len(logs_at_correct_log_level) == 1
 
 
 @pytest.mark.parametrize(
