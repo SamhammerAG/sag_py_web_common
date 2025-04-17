@@ -76,7 +76,8 @@ def test_excluding_log_via_path_is_possible(path: str, pathIsIgnored: bool) -> N
     excluded_paths = ["maintain/serviceStatus", "health/serviceStatus"]
     scope = {"path": path}
 
-    actual = FilteredAccessLoggerMiddleware._is_excluded_via_path(scope, excluded_paths)  # type: ignore # pylint: disable=W0212:protected-access
+    # pylint: disable=W0212:protected-access
+    actual = FilteredAccessLoggerMiddleware._is_excluded_via_path(scope, excluded_paths)  # type: ignore
 
     assert actual == pathIsIgnored
 
@@ -86,7 +87,8 @@ def test_not_configured_excluded_paths_does_not_cause_any_logs_to_be_excluded(pa
     excluded_paths = None
     scope = {"path": path}
 
-    actual = FilteredAccessLoggerMiddleware._is_excluded_via_path(scope, excluded_paths)  # type: ignore # pylint: disable=W0212:protected-access
+    # pylint: disable=W0212:protected-access
+    actual = FilteredAccessLoggerMiddleware._is_excluded_via_path(scope, excluded_paths)  # type: ignore
 
     assert actual == pathIsIgnored
 
@@ -96,7 +98,8 @@ def test_empty_excludes_paths_does_not_cause_any_logs_to_be_excluded(path: str, 
     excluded_paths: List[str] = []
     scope = {"path": path}
 
-    actual = FilteredAccessLoggerMiddleware._is_excluded_via_path(scope, excluded_paths)  # type: ignore # pylint: disable=W0212:protected-access
+    # pylint: disable=W0212:protected-access
+    actual = FilteredAccessLoggerMiddleware._is_excluded_via_path(scope, excluded_paths)  # type: ignore
 
     assert actual == pathIsIgnored
 
@@ -117,7 +120,8 @@ def test_excluding_logs_via_header_is_possible(headers: list[tuple[bytes, bytes]
         "headers": headers,
     }
 
-    actual = FilteredAccessLoggerMiddleware._is_excluded_via_header(scope, exclude_header)  # type: ignore # pylint: disable=W0212:protected-access
+    # pylint: disable=W0212:protected-access
+    actual = FilteredAccessLoggerMiddleware._is_excluded_via_header(scope, exclude_header)  # type: ignore
 
     assert actual == path_is_ignored
 
@@ -129,6 +133,7 @@ def test_not_configured_exclude_header_does_not_cause_any_logs_to_be_excluded(
     exclude_header = ""
     scope = {"headers": headers}
 
-    actual = FilteredAccessLoggerMiddleware._is_excluded_via_header(scope, exclude_header)  # type: ignore # pylint: disable=W0212:protected-access
+    # pylint: disable=W0212:protected-access
+    actual = FilteredAccessLoggerMiddleware._is_excluded_via_header(scope, exclude_header)  # type: ignore
 
     assert actual == path_is_ignored
