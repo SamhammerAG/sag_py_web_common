@@ -2,8 +2,7 @@ import logging
 from typing import List
 
 import pytest
-from asgi_logger.middleware import AccessInfo
-from asgiref.typing import ASGI3Application, ASGISendEvent
+from asgiref.typing import ASGI3Application
 from fastapi import FastAPI
 from starlette.testclient import TestClient
 
