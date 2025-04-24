@@ -39,7 +39,7 @@ app.include_router(build_default_route(ingress_base_path=config.ingress_base_pat
 ### Filtered access logging
 
 Extends the asgi-logger and adds a log entry for received requests.
-Furthermore the requests are filtered, so that health checks don't spam the logs.
+Furthermore the requests can be filtered, so that health checks (or similar) don't spam the logs.
 
 Requests can be filtered via one of two ways:
 
