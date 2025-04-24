@@ -1,6 +1,6 @@
 [tool.poetry]
 name = "sag-py-web-common"
-version = "1.0.2"
+version = "1.0.3"
 description = "Small helper functions for web projects"
 authors = ["Samhammer AG"]
 license = "MIT"

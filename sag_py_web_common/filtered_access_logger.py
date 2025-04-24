@@ -1,5 +1,5 @@
 import logging
-from typing import List, Union
+from typing import List, Optional, Union
 
 from asgi_logger.middleware import AccessInfo, AccessLogAtoms, AccessLoggerMiddleware
 from asgiref.typing import ASGI3Application, ASGIReceiveCallable, ASGISendCallable, HTTPScope
@@ -15,8 +15,8 @@ class FilteredAccessLoggerMiddleware(AccessLoggerMiddleware):
         app: ASGI3Application,
         format: Union[str, None],
         logger: Union[logging.Logger, None],
-        excluded_paths: Union[List[str], None],
-        exclude_header: Union[str, None],
+        excluded_paths: Optional[List[str]] = None,
+        exclude_header: Optional[str] = None,
     ) -> None:
         super().__init__(app, format, logger)
         self.excluded_paths = excluded_paths or []

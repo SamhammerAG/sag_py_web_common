@@ -41,9 +41,7 @@ def test_middleware_logs_successfully(
         "end_time": 1,
         "response": {"status": http_response_code},
     }
-    middleware = FilteredAccessLoggerMiddleware(
-        app=mock_app, format=None, logger=None, excluded_paths=[], exclude_header=""
-    )
+    middleware = FilteredAccessLoggerMiddleware(app=mock_app, format=None, logger=None)
     scope = {
         "type": "http",
         "http_version": "1.1",
