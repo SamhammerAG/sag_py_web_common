@@ -1,5 +1,8 @@
+import logging
+from typing import List, Union
+
 from asgi_logger.middleware import AccessInfo, AccessLogAtoms, AccessLoggerMiddleware
-from asgiref.typing import ASGIReceiveCallable, ASGISendCallable, HTTPScope
+from asgiref.typing import ASGI3Application, ASGIReceiveCallable, ASGISendCallable, HTTPScope
 
 
 class FilteredAccessLoggerMiddleware(AccessLoggerMiddleware):
@@ -7,7 +10,21 @@ class FilteredAccessLoggerMiddleware(AccessLoggerMiddleware):
     Furthermore it adds logging of the incoming requests
     """
 
-    async def __call__(self, scope: HTTPScope, receive: ASGIReceiveCallable, send: ASGISendCallable) -> None:
+    def __init__(
+        self,
+        app: ASGI3Application,
+        format: Union[str, None],
+        logger: Union[logging.Logger, None],
+        excluded_paths: Union[List[str], None],
+        exclude_header: Union[str, None],
+    ) -> None:
+        super().__init__(app, format, logger)
+        self.excluded_paths = excluded_paths or []
+        self.exclude_header = exclude_header.strip().lower() if exclude_header else ""
+
+    async def __call__(
+        self, scope: HTTPScope, receive: ASGIReceiveCallable, send: ASGISendCallable
+    ) -> None:  # pragma: no cover
         if self._should_log(scope):
             self.logger.info("Received: %s %s", scope["method"], scope["path"])
 
@@ -22,13 +39,29 @@ class FilteredAccessLoggerMiddleware(AccessLoggerMiddleware):
                 self.logger.warning(self.format, AccessLogAtoms(scope, info), extra=extra_args)
 
     def _should_log(self, scope: HTTPScope) -> bool:
-        return scope["type"] == "http" and not self._has_health_check_header(scope)
+        return (
+            scope["type"] == "http"
+            and not FilteredAccessLoggerMiddleware._is_excluded_via_path(scope, self.excluded_paths)
+            and not FilteredAccessLoggerMiddleware._is_excluded_via_header(scope, self.exclude_header)
+        )
 
-    def _has_health_check_header(self, scope: HTTPScope) -> bool:
-        header_dict: dict[bytes, bytes] = dict(scope["headers"])
-        return b"healthcheck" in header_dict and header_dict[b"healthcheck"] in {
-            b"livenessprobe",
-            b"readinessprobe",
-            b"startupprobe",
-            b"prtg",
-        }
+    @staticmethod
+    def _is_excluded_via_path(scope: HTTPScope, excluded_paths: List[str]) -> bool:
+        if not excluded_paths:
+            return False
+
+        path: str = str(scope["path"])
+        return any(excluded in path for excluded in excluded_paths)
+
+    @staticmethod
+    def _is_excluded_via_header(scope: HTTPScope, exclude_header: str) -> bool:
+        if not exclude_header:
+            return False
+
+        headers = scope.get("headers", [])
+        target_header_bytes = exclude_header.encode("latin-1").lower()
+
+        for header_key, _ in headers:
+            if header_key.lower() == target_header_bytes:
+                return True
+        return False
