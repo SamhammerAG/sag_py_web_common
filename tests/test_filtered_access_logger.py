@@ -10,7 +10,7 @@ from sag_py_web_common.filtered_access_logger import FilteredAccessLoggerMiddlew
 
 app = FastAPI()
 app.add_middleware(
-    FilteredAccessLoggerMiddleware,
+    FilteredAccessLoggerMiddleware,  # type: ignore[arg-type]
     format="%(client_addr)s - %(request_line)s %(status_code)s",
     logger=logging.getLogger("access"),
 )
