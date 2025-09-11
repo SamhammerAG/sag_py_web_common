@@ -1,2 +1,4 @@
 asgi-logger>=0.1.0
 fastapi>=0.115.12, <1
+starlette>=0.46.2
+

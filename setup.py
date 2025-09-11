@@ -11,7 +11,7 @@ with open("requirements-dev.txt", "r") as fin:
 
 setuptools.setup(
     name="sag-py-web-common",
-    version="1.0.4",
+    version="1.0.6",
     description="Small helper functions for web projects",
     long_description=LONG_DESCRIPTION,
     long_description_content_type="text/markdown",
