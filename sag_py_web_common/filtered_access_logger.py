@@ -40,8 +40,8 @@ class FilteredAccessLoggerMiddleware(AccessLoggerMiddleware):
             extra_args = {"execution_time": info["end_time"] - info["start_time"]}
             if (
                 info["response"].get("status")
-                and str(info["response"]["status"])[0] == "2"
-            ):  # type: ignore
+                and str(info["response"]["status"])[0] == "2" # type: ignore
+            ):
                 self.logger.info(
                     self.format, AccessLogAtoms(scope, info), extra=extra_args
                 )
