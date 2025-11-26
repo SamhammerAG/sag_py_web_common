@@ -10,7 +10,7 @@ from sag_py_web_common.filtered_access_logger import FilteredAccessLoggerMiddlew
 
 app = FastAPI()
 app.add_middleware(
-    FilteredAccessLoggerMiddleware,  # type: ignore[arg-type]
+    FilteredAccessLoggerMiddleware,
     format="%(client_addr)s - %(request_line)s %(status_code)s",
     logger=logging.getLogger("access"),
 )
@@ -35,7 +35,7 @@ def test_middleware_logs_successfully(
     log_level: int, http_response_code: int, caplog: pytest.LogCaptureFixture
 ) -> None:
     caplog.set_level(logging.INFO)
-    mock_app: ASGI3Application = lambda scope, receive, send: None  # type: ignore
+    mock_app: ASGI3Application = lambda scope, receive, send: None  # type: ignore # noqa: E731
     info = {
         "start_time": 1,
         "end_time": 1,
@@ -82,7 +82,7 @@ def test_logs_can_be_ignored_via_path_and_header(
 ) -> None:
     exclude_header = "exclude-logging"
     excluded_paths = ["maintain/serviceStatus", "health/serviceStatus"]
-    mock_app: ASGI3Application = lambda scope, receive, send: None  # type: ignore
+    mock_app: ASGI3Application = lambda scope, receive, send: None  # type: ignore # noqa: E731
     middleware = FilteredAccessLoggerMiddleware(
         app=mock_app, format=None, logger=None, excluded_paths=excluded_paths, exclude_header=exclude_header
     )
