@@ -2,7 +2,12 @@ import logging
 from typing import List, Optional, Union
 
 from asgi_logger.middleware import AccessInfo, AccessLogAtoms, AccessLoggerMiddleware
-from asgiref.typing import ASGI3Application, ASGIReceiveCallable, ASGISendCallable, HTTPScope
+from asgiref.typing import (
+    ASGI3Application,
+    ASGIReceiveCallable,
+    ASGISendCallable,
+    HTTPScope,
+)
 
 
 class FilteredAccessLoggerMiddleware(AccessLoggerMiddleware):
@@ -33,16 +38,27 @@ class FilteredAccessLoggerMiddleware(AccessLoggerMiddleware):
     def log(self, scope: HTTPScope, info: AccessInfo) -> None:
         if self._should_log(scope):
             extra_args = {"execution_time": info["end_time"] - info["start_time"]}
-            if info["response"].get("status") and str(info["response"]["status"])[0] == "2":  # type: ignore
-                self.logger.info(self.format, AccessLogAtoms(scope, info), extra=extra_args)
+            if (
+                info["response"].get("status")
+                and str(info["response"]["status"])[0] == "2"
+            ):  # type: ignore
+                self.logger.info(
+                    self.format, AccessLogAtoms(scope, info), extra=extra_args
+                )
             else:
-                self.logger.warning(self.format, AccessLogAtoms(scope, info), extra=extra_args)
+                self.logger.warning(
+                    self.format, AccessLogAtoms(scope, info), extra=extra_args
+                )
 
     def _should_log(self, scope: HTTPScope) -> bool:
         return (
             scope["type"] == "http"
-            and not FilteredAccessLoggerMiddleware._is_excluded_via_path(scope, self.excluded_paths)
-            and not FilteredAccessLoggerMiddleware._is_excluded_via_header(scope, self.exclude_header)
+            and not FilteredAccessLoggerMiddleware._is_excluded_via_path(
+                scope, self.excluded_paths
+            )
+            and not FilteredAccessLoggerMiddleware._is_excluded_via_header(
+                scope, self.exclude_header
+            )
         )
 
     @staticmethod
