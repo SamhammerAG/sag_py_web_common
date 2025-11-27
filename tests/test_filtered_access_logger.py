@@ -180,7 +180,8 @@ def test_excluding_logs_via_header_is_possible(
 
     # pylint: disable=W0212:protected-access
     actual = FilteredAccessLoggerMiddleware._is_excluded_via_header(
-        scope, exclude_header # type: ignore
+        scope,  # type: ignore
+        exclude_header,
     )
 
     assert actual == path_is_ignored
@@ -197,7 +198,8 @@ def test_not_configured_exclude_header_does_not_cause_any_logs_to_be_excluded(
 
     # pylint: disable=W0212:protected-access
     actual = FilteredAccessLoggerMiddleware._is_excluded_via_header(
-        scope, exclude_header # type: ignore
+        scope,  # type: ignore
+        exclude_header,
     )
 
     assert actual == path_is_ignored
