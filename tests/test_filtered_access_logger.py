@@ -10,7 +10,7 @@ from sag_py_web_common.filtered_access_logger import FilteredAccessLoggerMiddlew
 
 app = FastAPI()
 app.add_middleware(
-    FilteredAccessLoggerMiddleware,  # type: ignore[arg-type]
+    FilteredAccessLoggerMiddleware,
     format="%(client_addr)s - %(request_line)s %(status_code)s",
     logger=logging.getLogger("access"),
 )
@@ -35,7 +35,7 @@ def test_middleware_logs_successfully(
     log_level: int, http_response_code: int, caplog: pytest.LogCaptureFixture
 ) -> None:
     caplog.set_level(logging.INFO)
-    mock_app: ASGI3Application = lambda scope, receive, send: None  # type: ignore
+    mock_app: ASGI3Application = lambda scope, receive, send: None  # type: ignore # noqa: E731
     info = {
         "start_time": 1,
         "end_time": 1,
@@ -58,7 +58,9 @@ def test_middleware_logs_successfully(
 
     middleware.log(scope, info)  # type: ignore # pylint: disable=W0212:protected-access
 
-    logs_at_correct_log_level = [record for record in caplog.records if record.levelno == log_level]
+    logs_at_correct_log_level = [
+        record for record in caplog.records if record.levelno == log_level
+    ]
 
     assert len(caplog.records) == 1
     assert len(logs_at_correct_log_level) == 1
@@ -82,9 +84,13 @@ def test_logs_can_be_ignored_via_path_and_header(
 ) -> None:
     exclude_header = "exclude-logging"
     excluded_paths = ["maintain/serviceStatus", "health/serviceStatus"]
-    mock_app: ASGI3Application = lambda scope, receive, send: None  # type: ignore
+    mock_app: ASGI3Application = lambda scope, receive, send: None  # type: ignore # noqa: E731
     middleware = FilteredAccessLoggerMiddleware(
-        app=mock_app, format=None, logger=None, excluded_paths=excluded_paths, exclude_header=exclude_header
+        app=mock_app,
+        format=None,
+        logger=None,
+        excluded_paths=excluded_paths,
+        exclude_header=exclude_header,
     )
 
     scope = {"type": "http", "path": path, "headers": ignored_headers}
@@ -122,8 +128,13 @@ def test_excluding_log_via_path_is_possible(path: str, pathIsIgnored: bool) -> N
     assert actual == pathIsIgnored
 
 
-@pytest.mark.parametrize("path,pathIsIgnored", [("/serviceStatus", False), ("/my/other/endpoint", False), ("/", False)])
-def test_not_configured_excluded_paths_does_not_cause_any_logs_to_be_excluded(path: str, pathIsIgnored: bool) -> None:
+@pytest.mark.parametrize(
+    "path,pathIsIgnored",
+    [("/serviceStatus", False), ("/my/other/endpoint", False), ("/", False)],
+)
+def test_not_configured_excluded_paths_does_not_cause_any_logs_to_be_excluded(
+    path: str, pathIsIgnored: bool
+) -> None:
     excluded_paths = None
     scope = {"path": path}
 
@@ -133,8 +144,13 @@ def test_not_configured_excluded_paths_does_not_cause_any_logs_to_be_excluded(pa
     assert actual == pathIsIgnored
 
 
-@pytest.mark.parametrize("path,pathIsIgnored", [("/serviceStatus", False), ("/my/other/endpoint", False), ("/", False)])
-def test_empty_excludes_paths_does_not_cause_any_logs_to_be_excluded(path: str, pathIsIgnored: bool) -> None:
+@pytest.mark.parametrize(
+    "path,pathIsIgnored",
+    [("/serviceStatus", False), ("/my/other/endpoint", False), ("/", False)],
+)
+def test_empty_excludes_paths_does_not_cause_any_logs_to_be_excluded(
+    path: str, pathIsIgnored: bool
+) -> None:
     excluded_paths: List[str] = []
     scope = {"path": path}
 
@@ -154,19 +170,26 @@ def test_empty_excludes_paths_does_not_cause_any_logs_to_be_excluded(path: str, 
         ([], False),
     ],
 )
-def test_excluding_logs_via_header_is_possible(headers: list[tuple[bytes, bytes]], path_is_ignored: bool) -> None:
+def test_excluding_logs_via_header_is_possible(
+    headers: list[tuple[bytes, bytes]], path_is_ignored: bool
+) -> None:
     exclude_header = "exclude-logging"
     scope = {
         "headers": headers,
     }
 
     # pylint: disable=W0212:protected-access
-    actual = FilteredAccessLoggerMiddleware._is_excluded_via_header(scope, exclude_header)  # type: ignore
+    actual = FilteredAccessLoggerMiddleware._is_excluded_via_header(
+        scope,  # type: ignore
+        exclude_header,
+    )
 
     assert actual == path_is_ignored
 
 
-@pytest.mark.parametrize("headers,path_is_ignored", [([(b"Exclude-Logging", b"")], False), ([], False)])
+@pytest.mark.parametrize(
+    "headers,path_is_ignored", [([(b"Exclude-Logging", b"")], False), ([], False)]
+)
 def test_not_configured_exclude_header_does_not_cause_any_logs_to_be_excluded(
     headers: list[tuple[bytes, bytes]], path_is_ignored: bool
 ) -> None:
@@ -174,6 +197,9 @@ def test_not_configured_exclude_header_does_not_cause_any_logs_to_be_excluded(
     scope = {"headers": headers}
 
     # pylint: disable=W0212:protected-access
-    actual = FilteredAccessLoggerMiddleware._is_excluded_via_header(scope, exclude_header)  # type: ignore
+    actual = FilteredAccessLoggerMiddleware._is_excluded_via_header(
+        scope,  # type: ignore
+        exclude_header,
+    )
 
     assert actual == path_is_ignored

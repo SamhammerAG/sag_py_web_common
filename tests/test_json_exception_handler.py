@@ -14,7 +14,9 @@ from sag_py_web_common.json_exception_handler import handle_validation_exception
 @pytest.mark.asyncio
 async def test_handle_unknown_exception() -> None:
     # Act
-    result: JSONResponse = await handle_unknown_exception("", Exception("error message"))
+    result: JSONResponse = await handle_unknown_exception(
+        "", Exception("error message")
+    )
 
     # Assert
     assert result.status_code == 500
@@ -24,7 +26,15 @@ async def test_handle_unknown_exception() -> None:
 @pytest.mark.asyncio
 async def test_validation_exception_handler() -> None:
     # Arrange
-    exc = RequestValidationError([{"loc": ("body", "title"), "msg": "field required", "type": "value_error.missing"}])
+    exc = RequestValidationError(
+        [
+            {
+                "loc": ("body", "title"),
+                "msg": "field required",
+                "type": "value_error.missing",
+            }
+        ]
+    )
     request = Mock()
 
     # Act
