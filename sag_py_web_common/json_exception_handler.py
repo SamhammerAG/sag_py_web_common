@@ -41,7 +41,7 @@ async def log_exception(_, exception: StarletteHTTPException) -> Response:  # ty
 
 async def handle_validation_exception(
     _: Any, exception: RequestValidationError
-) -> JSONResponse:
+) -> JSONResponse:  # type: ignore
     errors = [
         ValidationErrorDetail(
             **{
