@@ -1,7 +1,6 @@
 -r requirements.txt
 anyio >= 4.9.0
 build >= 1.2.2.post1
-coverage
 coverage-lcov
 httpx >= 0.28.1
 mock
@@ -11,8 +10,5 @@ pytest-asyncio
 pytest-cov
 starlette >= 0.46.2
 ruff
-# Toml and coverage temporarely fixes compatibility issues between coverage-lcov and coverage
-# see for details: https://github.com/theupdateframework/python-tuf/issues/2254
-toml
 types-mock
 zipp >= 3.21.0
