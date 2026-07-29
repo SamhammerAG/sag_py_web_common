@@ -57,8 +57,8 @@ app.add_middleware(
     FilteredAccessLoggerMiddleware,
     format="Completed: %(R)s - %(st)s - %(L)s",
     logger=logging.getLogger("access"),
-    excluded_paths=["pathPart/partOne", "pathPart/partTwo"], # optional
-    exclude_header="myHeaderExclude" # optional
+    excluded_paths=["pathPart/partOne", "pathPart/partTwo"],  # optional
+    exclude_header="myHeaderExclude",  # optional
 )
 ```
 
