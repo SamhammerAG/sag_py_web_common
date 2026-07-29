@@ -18,10 +18,10 @@ class FilteredAccessLoggerMiddleware(AccessLoggerMiddleware):
     def __init__(
         self,
         app: ASGI3Application,
-        format: Union[str, None],
-        logger: Union[logging.Logger, None],
-        excluded_paths: Optional[list[str]] = None,
-        exclude_header: Optional[str] = None,
+        format: str | None,
+        logger: logging.Logger | None,
+        excluded_paths: list[str] | None = None,
+        exclude_header: str | None = None,
     ) -> None:
         super().__init__(app, format, logger)
         self.excluded_paths = excluded_paths or []
